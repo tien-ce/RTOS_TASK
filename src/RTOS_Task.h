@@ -12,11 +12,17 @@
 struct Uart_VAL{
     char* data;
     int num ;
+
 };
 struct DHT_VAL{
     uint8_t DHT_type;
     float temperature;
     float humidity;
+    DHT_VAL(uint8_t DHT_type){
+        this-> DHT_type = DHT_type; 
+        this->temperature = 0;
+        this->humidity = 0;
+    }
 };
 class Parameter{
     private:

@@ -1,0 +1,20 @@
+#include <Arduino.h>
+#include "RTOS_Task.h"
+#include <stdio.h>
+#define LED_RED_Pin 8
+#define Max_Task 100
+#define DHT_Type DHT22
+#define DHT_Pin 10
+
+/*------------------------Declaration-------------------------------------*/
+DHT_VAL re_val = {DHT_Type}; // For Non-Basic Task 
+/*----------------------------------------------------------------*/
+void setup(){
+    Serial.begin(9600);
+    CreateTask(Blinky,1024,LED_RED_Pin,1000,NULL); // Basic Task 
+    CreateTask(Dht,2048,DHT_Pin,1000,&re_val);
+    // re_val.temperature : "temperature" , re_val.humidity : "re_val"
+}   
+void loop(){
+
+}
