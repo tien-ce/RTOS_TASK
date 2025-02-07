@@ -2,10 +2,6 @@
 /*------------------------------------------*/
 /*--------------Task------------------------*/
 /*------------------------------------------*/
-#define INIT_TASK(pvParameters)                   \
-    Parameter pm = *((Parameter*) pvParameters);  \
-    uint8_t Pin = pm.get_Pin();                   \
-    uint32_t Delay = pm.get_Delay();
 void TaskBlinky(void* pvParameters){
     INIT_TASK(pvParameters);
     for(;;){
@@ -33,20 +29,16 @@ void TaskDht(void* pvParameters){
         dht.humidity().getEvent(&event);
         re_val->humidity = event.relative_humidity;
         char trans[50];
-        sprintf(trans,"!1:H:%.2f#!1:T:%.2f#",re_val->humidity,re_val->temperature);
-        Serial.println(trans);
         delay(Delay);
     }
 }
 void TaskUart(void* pvParameters){
     INIT_TASK(pvParameters);
     Uart_VAL transmit = *(Uart_VAL*) pm.other;
+    char trans[50];
     for(;;){
-        char data[transmit.num] ;
-        for(int i = 0 ; i < transmit.num ; i++){
-            data[i] = transmit.data[i];
-        }
-        Serial.println(data);
+        sprintf(trans,"!1:H:%.2f#!1:T:%.2f#",transmit.dht_val->humidity,transmit.dht_val->temperature);
+        Serial.println(trans);
         delay(Delay);
     }
 }

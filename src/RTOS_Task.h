@@ -8,10 +8,12 @@
 #define CreateTask(name_task,stack,Pin,Delay,other) \
     Parameter pm_##name_task(Pin,Delay,other); \
     xTaskCreate(Task##name_task, #name_task,stack,(void*) &pm_##name_task,2,NULL);
+#define INIT_TASK(pvParameters)                   \
+    Parameter pm = *((Parameter*) pvParameters);  \
+    uint8_t Pin = pm.get_Pin();                   \
+    uint32_t Delay = pm.get_Delay();
 /*-------------------------Struct-----------------------------------*/    
-struct Uart_VAL{
-    char* data;
-    int num ;
+struct LIGHT_VAL{
 
 };
 struct DHT_VAL{
@@ -24,6 +26,15 @@ struct DHT_VAL{
         this->humidity = 0;
     }
 };
+struct Uart_VAL{
+    DHT_VAL * dht_val;
+    LIGHT_VAL* light_val;
+    Uart_VAL(DHT_VAL *dht_val,LIGHT_VAL* light_val){
+        this->dht_val = dht_val;
+        this->light_val = light_val;
+    }
+};
+
 class Parameter{
     private:
         uint8_t Pin;
